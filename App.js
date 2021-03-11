@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Platform, SafeAreaView, TouchableOpacity, StyleSheet, Text, View, Modal } from 'react-native';
+import { Platform, SafeAreaView, TouchableOpacity, StyleSheet, Text, View, Modal, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
@@ -19,6 +19,7 @@ export default function App() {
   const cameraRef = useRef(null);
 
   useEffect(() => {
+    setShowModal(false);
     switch (Platform.OS) {
       case 'ios':
         setIconePadrao('md');
@@ -63,6 +64,11 @@ export default function App() {
       // console.log(photo);
 
       setPhotoCapturada(photo.uri);
+      setShowModal(true);
+
+      // setTimeout(() => {
+      //   setShowModal(false);
+      // }, 3000);
     }
   }
 
@@ -115,7 +121,10 @@ export default function App() {
         transparent={true}
       >
         <View style={styles.modalView}>
-
+          <Image
+            source={{ uri: photoCapturada }}
+            style={{ width: "90%", height: "50%", borderRadius: 20 }}
+          />
         </View>
       </Modal>
     </SafeAreaView>
@@ -144,11 +153,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   modalView: {
+    justifyContent: "center",
     margin: 10,
     backgroundColor: "#fff",
     borderRadius: 20,
-    padding: 15,
-    opacity: 0.9,
+    padding: 10,
     alignItems: "center"
+    // opacity: 0.9,
   }
 });
